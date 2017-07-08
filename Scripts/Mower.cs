@@ -13,8 +13,8 @@ public class Mower : MonoBehaviour {
 	}
 
     void OnTriggerEnter(Collider col) {
-        if(col.GetComponent<Grass>()) {
-            col.GetComponent<Grass>().SetGrassVolume(1);
+        if(col.tag.Equals("Grass")) {
+            col.transform.localScale = new Vector3(1, 1, .1f);
         }
     }
 }

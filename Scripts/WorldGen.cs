@@ -9,13 +9,13 @@ public class WorldGen : MonoBehaviour {
 
     public Vector2 grassAmount;
 
-    List<Grass> allGrass;
+    List<GameObject> allGrass;
 
     int timer = 0;
     float randomNumber = 0;
 
     void Start () {
-        allGrass = new List<Grass>();
+        allGrass = new List<GameObject>();
 
         for (int y = 0; y < grassAmount.y; y++) {
             for(int x = 0; x < grassAmount.x; x++) {
@@ -24,7 +24,7 @@ public class WorldGen : MonoBehaviour {
                 obj.transform.localPosition += new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                 obj.name = x + " / " + y;
 
-                allGrass.Add(obj.GetComponent<Grass>());
+                allGrass.Add(obj);
             }
         }
 	}
@@ -43,18 +43,17 @@ public class WorldGen : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        timer++;
+        timer += 90;
         if (timer >= 90 + randomNumber) {
-            //UpdateGrass();
+            UpdateGrass();
             timer = 0;
         }
     }
 
     void UpdateGrass() {
-        Grass randomGrass = allGrass[Random.Range(0, allGrass.Count)];
-        if(randomGrass.volume < 9) {
-            randomGrass.volume = Mathf.Clamp(randomGrass.volume + 1, 1, 9);
-            randomGrass.SetGrassVolume(randomGrass.volume);
+        GameObject randomGrass = allGrass[Random.Range(0, allGrass.Count)];
+        if(randomGrass.transform.localScale.z < 1f) {
+            randomGrass.transform.localScale = new Vector3(1, 1, randomGrass.transform.localScale.z + (randomNumber < 5 ? .1f : .2f));
             randomNumber = Random.Range(1, 10);
         }
     }
